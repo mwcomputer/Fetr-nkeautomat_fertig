@@ -2,51 +2,63 @@
 /* View- Controller */
 
 /* Der Plan
-    Einlesen Daten von Webseite ::check 
+    Einlesen Daten von Webseite :: check!
 	Check Daten :: 
-    Btn. Trigger :: check
-    Business-Logic (Alter --> Getränk) :: 
+    Btn. Trigger :: check!
+    Business-Logic (Alter --> Getränk) :: check!
     Bild austauschen :: check!
 */
 
-// Modul Ablaufsteuerung | Test:
-controller()
-function controller() {
-    ausgabe(updateImg(checkAge(getInput())));
-}
-
-
-// Trigger - Btn 
+// Trigger Btn.
 let btn = document.getElementById("trigBtn");
 btn.addEventListener("click",actOnClick);
-// Trigger - Input
 
+// Trigger Input
+let field = document.getElementsByName("eingabe")[0];
+field.addEventListener("input", isInputValid);
 
+// Event-Dispatcher :: click
 
-// Event-Dispatcher
-function actOnClick() {
-    if (isInputValid) {
-        controller()
-    } else {
-        ausgabe("input nicht korrekt.")
-        
+    
+    let inputStr = field.value;
+    var patt = /^[0-9]?[0-9]?[0-9]$/g;  //max 3 Ziffern zugelassen
+    let cond = patt.test(inputStr);
+
+    if (!cond) {
+        field.value = "";
+        updateImg("tee");
     }
-
+function actOnClick() {
+    if (isInputValid()) {
+        controller();
+    } else {
+        ausgabe("Input nicht korrekt!");
+    } 
 }
 
-// Check auf korrekte Eingaben ...
-function getInput(){
-    return false
+function isInputValid() {
+    return cond;
 }
 
-
-// Modul Eingabe | Test:
-//ausgabe(getInput());
 function getInput() {
     let inputField = document.getElementsByName("eingabe")[0];
-    let age = parseInt(inputField.value);
+    let age = parseInt(inputField.value); 
     return age;
 }
+
+//Modul: Ablaufsteuerung (controller) --> Test:
+//controller();
+function controller() {
+    // actions
+    let ageNum    = getInput();
+    let bevStr    = checkAge(ageNum);
+    let loadedImg = updateImg(bevStr);
+
+    // monitoring
+    ausgabe("Getränk: " + bevStr);
+    ausgabe("Bild: " + loadedImg + gui.img.ext);
+}
+
 //Modul: Business-Logic --> Test:
 /* ausgabe(checkAge(2));
 ausgabe(checkAge(6));
@@ -67,16 +79,16 @@ function checkAge(age) {
     } 
 }
 
-
-// Modul: Bild aktualisieren | Test:
- ausgabe(updateImg("cola"));
+//Modul: Bild austauschen (View)--> Test:
+//ausgabe(updateImg("milch"));
 function updateImg(imgName) {
-    let img = document.getElementById("bevImg");
-    img.src = gui.img.path + imgName + gui.img.ext;
-    return imgName; // monitoring
+   let img = document.getElementById("bevImg");
+   img.src = gui.img.path + imgName + gui.img.ext;
+   return imgName;
 }
 
 //Modul: Konsolenausgabe --> Test:
+//ausgabe("test");
 function ausgabe(outputStr) {
     console.log(outputStr);
 }
