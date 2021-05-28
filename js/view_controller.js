@@ -21,7 +21,7 @@ field.addEventListener("input", isInputValid);
 
     
     let inputStr = field.value;
-    var patt = /^[0-9]?[0-9]?[0-9]$/g;  //max 3 Ziffern zugelassen
+    let patt = /^[0-9]?[0-9]?[0-9]$/g;  //max 3 Ziffern zugelassen
     let cond = patt.test(inputStr);
 
     if (!cond) {
